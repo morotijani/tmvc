@@ -1,5 +1,10 @@
 <?php
 
+namespace Controller;
+
+// avoiding accessing controller directly
+defined('ROOTPATH') OR exit('Access Denied!');
+
 /**
  * Home Class
  */

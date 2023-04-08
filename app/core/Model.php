@@ -1,5 +1,9 @@
 <?php
 
+namespace Model;
+
+defined('ROOTPATH') OR exit('Access Denied!');
+
 /**
  * Main Model Trait
  */

@@ -1,5 +1,9 @@
 <?php
 
+namespace Controller;
+
+defined('ROOTPATH') OR exit('Access Denied!');
+
 //Trait Controller {
 	
 	// view pages

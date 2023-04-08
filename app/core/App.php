@@ -1,5 +1,7 @@
 <?php
 
+defined('ROOTPATH') OR exit('Access Denied!');
+
 class App {
 
 	// create a default
@@ -31,7 +33,8 @@ class App {
 			$this->controller = "_404";
 		}
 
-		$controller = new $this->controller;
+		$mycontroller = ('\Controller\\' . $this->controller);
+		$controller = new $mycontroller;
 
 		// Select method
 		if (!empty($URL[1])) {
