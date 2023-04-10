@@ -12,6 +12,13 @@ class Home {
 	use Controller;
 
 	public function index() {
+
+		// Check if user is logged in or not
+		// $ses = new \Core\Session;
+		// if (!$ses->is_logged_in()) {
+		// 	redirect('login');
+		// }
+
 		$this->view('home');
 	}
 }

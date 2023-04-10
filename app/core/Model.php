@@ -147,5 +147,122 @@ Trait Model {
 		return false;
 	}
 
+	// check if an error with a specific key
+	public function getError($key) {
+		if (!empty($this->errors[$key])) {
+			// code...
+			return $this->errors[$key];
+		}
+		return "";
+	}
+
+	// return database table primary key
+	protected function getPrimaryKey() {
+		return $this->primaryKey ?? 'id';
+	}
+
+	public function validate($data) {
+		$this->errors = [];
+
+		if (!empty($this->validationRules)) {
+			foreach ($this->validationRules as $column => $rules) {
+				// code...
+				if (!isset($data[$column])) 
+					continue;
+
+				foreach ($rules as $rule) {
+					// code...
+					switch ($rule) {
+						case 'required':
+							// checking on required columns
+							if (empty($data[$column])) 
+								// code...
+								$this->errors[$column] = ucfirst($column) . ' is required!';
+							break;
+
+							case 'email':
+							// checking on valid email address
+							if (!filter_var(trim($data[$column]), FILTER_VALIDATE_EMAIL)) 
+								// code...
+								$this->errors[$column] = ucfirst($column) . ' is invalid!';
+							break;
+
+							case 'alpha_space':
+							// checking on alphabetical letters and spaces
+							if (!preg_match("/^[a-zA-Z ]+$/", trim($data[$column]))) 
+								// code...
+								$this->errors[$column] = ucfirst($column) . ' should only have alphabetical letters and spaces!';
+							break;
+
+							case 'alpha':
+							// checking on alphabetical letters
+							if (!preg_match("/^[a-zA-Z]+$/", trim($data[$column]))) 
+								// code...
+								$this->errors[$column] = ucfirst($column) . ' must only have alphabetical letters without spaces!';
+							break;
+
+							case 'alpha_numeric':
+							// checking on alphabetical letters and number
+							if (!preg_match("/^[a-zA-Z0-9]+$/", trim($data[$column]))) 
+								// code...
+								$this->errors[$column] = ucfirst($column) . ' should only have alphabetical letters and numbers!';
+							break;
+
+							case 'alpha_numeric_symbol':
+							// code...
+							if (!preg_match("/^[a-zA-Z0-9\-\!\@\#\$\%\^\&\*\(\)\[\]\. ]+$/", trim($data[$column]))) 
+								// code...
+								$this->errors[$column] = ucfirst($column) . ' should only have alphabetical letters, numbers and symbols!';
+							break;
+
+							case 'alpha_symbol':
+							// code...
+							if (!preg_match("/^[a-zA-Z\-\!\@\#\$\%\^\&\*\(\)\[\]\. ]+$/", trim($data[$column]))) 
+								// code...
+								$this->errors[$column] = ucfirst($column) . ' should only have alphabetical letters and symbols only!';
+							break;
+
+							case 'not_less_than_6_chars':
+							// code...
+							if (strlen(trim($data[$column])) < 6) 
+								// code...
+								$this->errors[$column] = ucfirst($column) . ' must be greater or equal to 6 characters!';
+							break;
+
+							case 'unique':
+							// code... already exist
+							$key = $this->getPrimaryKey();
+							if (!empty($data[$key])) {
+								// edit mode
+								// edit data, data != any other but but id == primarykey
+								if ($this->findFirst([$column => $data[$column]], [$key => $data[$key]])) {
+									// code...
+									$this->errors[$column] = ucfirst($column) . ' must be unique!';
+								}
+							} else {
+								// insert mode
+								if ($this->findFirst([$column => $data[$column]])) {
+										// code...
+										$this->errors[$column] = ucfirst($column) . ' must be unique!';
+								}
+							}
+							break;
+						
+						default:
+							// code...
+							$this->errors['rules'] = 'The rule ' . $rule . ' was not found!';
+							break;
+					}
+				}
+			}
+		}
+
+		if (empty($this->errors)) {
+			// code...
+			return true;
+		}
+		return false;
+	}
+
 }
 

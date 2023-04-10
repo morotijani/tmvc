@@ -40,7 +40,7 @@ class Request {
 			// code...
 			return $_POST;
 		} else if (isset($_POST[$key])) {
-			return $_POST[$key]
+			return $_POST[$key];
 		}
 
 		return $default;
@@ -63,7 +63,11 @@ class Request {
 		if (empty($key)) {
 			// code...
 			return $_GET;
-		} else if () {}
+		} else if (isset($_GET[$key])) {
+			return $_GET[$key];
+		}
+
+		return $default;
 	}
 
 	// Get a value from a REQUEST variable
