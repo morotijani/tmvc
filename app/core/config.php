@@ -3,7 +3,7 @@
 defined('ROOTPATH') OR exit('Access Denied!');
 
 // check if project is on a live server or not
-if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1' || $_SERVER['SERVER_NAME'] == 'sites.local') {
+if ((empty($_SERVER['SERVER_NAME']) && php_sapi_name() == 'cli') || (!empty($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1' || $_SERVER['SERVER_NAME'] == 'sites.local')) {
 	// code...
 	// database configuration
 	define('DBNAME', 'tmvc');

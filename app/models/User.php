@@ -40,7 +40,23 @@ class User {
 	 *symbol 
 	 *not_less_than_6_chars
 	 * **************************/
-	protected $validationRules = [
+	protected $onUpdateValidationRules = [
+		'email' => [ 
+			'email', 
+			'unique',
+			'required', 
+		],
+		'username' => [
+			'alpha', 
+			'required', 
+		],
+		'password' => [
+			'not_less_than_6_chars', 
+			'required', 
+		],
+	];
+
+	protected $onInsertValidationRules = [
 		'email' => [ 
 			'email', 
 			'unique',

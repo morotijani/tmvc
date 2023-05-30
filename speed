@@ -1,0 +1,40 @@
+<?php
+	/** 
+	* check the server api you are running 
+	* sapi = server api
+	* you can run php in 2 api mode
+	* cgi = runs through the browser
+	* cli = command line
+	*/ 
+	if (php_sapi_name() !== "cli") {
+		die("THis tool is only for use in the commad line.");
+	}
+
+	define('DS', DIRECTORY_SEPARATOR); // determine the directory separator is for the current system thst the user is running the mvc on (could be linux etc) 
+	define('CPATH', __DIR__ . DS);
+	define('ROOTPATH', __DIR__ . DS);
+	chdir(CPATH); // change directory to cpath 
+
+	$action = $argv[1] ?? 'help'; // if $argv[1] do not exist let assume the user type help keyword.
+
+	require ("app" . DS . "speed" . DS . "init.php");
+
+	$speed = new \Speed\Speed;
+
+	// runs a function 
+	// you can run a function within an object / class
+	// so what am doing is that, run me a functon, the function is within the "speed" object and the function is called "make"
+	if (empty($action)) {
+		// code...
+		call_user_func_array([$speed, 'help'], []);
+	} else {
+		$parts = explode(":", $action);
+		// is_callable trys to call a function. return boolen
+		// check if a function exist in a class
+		if (is_callable([$speed, $parts[0]])) {
+			call_user_func_array([$speed, $parts[0]], [$argv]);
+		} else {
+			echo "\n\r That commad was not recognized. Please see below for commands. \n\r";
+			call_user_func_array([$speed, 'help'], []);
+		}
+	}
